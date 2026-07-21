@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxAtlas | Measure the Changing Earth</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --ocean-blue: #0A192F;
+            --ocean-blue-light: #152E4D;
+            --slate-gray: #4A5568;
+            --slate-light: #718096;
+            --white: #FFFFFF;
+            --bg-light: #F7FAFC;
+            --bg-muted: #EDF2F7;
+            --coastal-green: #2C4C3B;
+            --border-color: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: 'Inter', sans-serif;
+            color: var(--slate-gray);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            background-color: var(--white);
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--ocean-blue);
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .bg-gray {
+            background-color: var(--bg-light);
+            max-width: 100%;
+        }
+        
+        .bg-gray > .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--ocean-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--ocean-blue-light);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--white);
+            color: var(--ocean-blue);
+        }
+        
+        .btn-secondary-dark {
+            background-color: transparent;
+            border-color: var(--ocean-blue);
+            color: var(--ocean-blue);
+        }
+        
+        .btn-secondary-dark:hover {
+            background-color: var(--ocean-blue);
+            color: var(--white);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--ocean-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--slate-gray);
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--ocean-blue);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(10, 25, 47, 0.5), rgba(10, 25, 47, 0.8)), url('https://images.unsplash.com/photo-1605051912624-9b8f27e583c2?auto=format&fit=crop&w=2070&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 2rem;
+            max-width: 100%;
+            margin-top: 0;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            margin-top: 4rem; /* Offset for sticky nav */
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            color: #E2E8F0;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* --- CREDIBILITY STRIP --- */
+        .credibility-strip {
+            background-color: var(--bg-light);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 0;
+            max-width: 100%;
+        }
+
+        .credibility-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .credibility-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .credibility-item:last-child {
+            border-right: none;
+        }
+
+        .credibility-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--slate-light);
+            font-weight: 600;
+        }
+
+        .credibility-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--ocean-blue);
+        }
+
+        /* --- SECTION 1: HOW IT WORKS (Parallel Workflow) --- */
+        .workflow {
+            text-align: center;
+        }
+        
+        .workflow h2 {
+            margin-bottom: 4rem;
+            font-size: 2.25rem;
+        }
+
+        .workflow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .workflow-inputs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .workflow-step {
+            background: var(--bg-light);
+            padding: 1.25rem 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--ocean-blue);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .input-card {
+            background: var(--white);
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--ocean-blue);
+            box-shadow: 0 2px 4px -1px rgba(0,0,0,0.05);
+        }
+
+        .workflow-arrow {
+            color: var(--slate-light);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* --- SECTION 2: THE PROBLEM --- */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .problem-text h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .problem-text ul {
+            list-style-type: none;
+            margin-top: 1.5rem;
+        }
+        
+        .problem-text li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .problem-text li::before {
+            content: "•";
+            color: var(--coastal-green);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .problem-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- SECTION 3: WHY FLUXATLAS --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .comparison-card {
+            background: var(--white);
+            padding: 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .comparison-card h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .comparison-card ul {
+            list-style: none;
+        }
+
+        .comparison-card li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .traditional li::before { content: "✕"; color: var(--slate-light); position: absolute; left: 0; font-size: 0.9rem; top: 0.1rem;}
+        .fluxatlas-card li::before { content: "✓"; color: var(--ocean-blue); position: absolute; left: 0; font-weight: bold; }
+        .fluxatlas-card { border-top: 4px solid var(--ocean-blue); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
+
+        /* --- CARD GRIDS (Tech, Research) --- */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.25rem;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--slate-gray);
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card h4 {
+            font-size: 0.95rem;
+            color: var(--coastal-green);
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--slate-gray);
+            line-height: 1.6;
+        }
+
+        /* --- SECTION 5: APPLICATIONS (Tag Grid) --- */
+        .app-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .app-tag {
+            background: var(--bg-muted);
+            color: var(--ocean-blue);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        
+        .app-tag:hover {
+            background: var(--white);
+            border-color: var(--ocean-blue);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        /* --- SECTION 7: TEAM --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            filter: grayscale(10%);
+        }
+
+        .team-member h3 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .team-member h4 { font-size: 0.9rem; color: var(--coastal-green); margin-bottom: 1rem; font-weight: 600;}
+        .team-member p { font-size: 0.85rem; color: var(--slate-gray); margin-bottom: 0.25rem; }
+        
+        .advisors {
+            margin-top: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 3rem;
+        }
+
+        /* --- SECTION 8: UPDATES --- */
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 2px solid var(--border-color);
+            padding-left: 2.5rem;
+        }
+
+        .update {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .update-icon {
+            position: absolute;
+            left: -3.4rem;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .update-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--slate-light);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .update-text {
+            font-size: 1.1rem;
+            color: var(--ocean-blue);
+        }
+        
+        /* --- VISION SECTION --- */
+        .vision-section {
+            background-color: var(--ocean-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 8rem 2rem;
+            max-width: 100%;
+        }
+        
+        .vision-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .vision-section h2 {
+            color: var(--white);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            color: #A0AEC0;
+        }
+        
+        .vision-section p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .vision-section p:last-child {
+            margin-bottom: 0;
+            color: #E2E8F0;
+        }
+
+        /* --- SECTION 9: CONTACT --- */
+        .contact {
+            text-align: center;
+            padding: 6rem 2rem 8rem 2rem;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact p {
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+            font-size: 1.1rem;
+        }
+        
+        .newsletter-placeholder {
+            margin-top: 3rem;
+            font-size: 0.85rem;
+            color: var(--slate-light);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--ocean-blue);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .footer-links a { color: #A0AEC0; transition: color 0.2s;}
+        .footer-links a:hover { color: var(--white); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .credibility-container { grid-template-columns: 1fr 1fr; gap: 1rem; }
+            .credibility-item { border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+            .credibility-item:nth-child(3), .credibility-item:nth-child(4) { border-bottom: none; padding-bottom: 0;}
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.1rem; }
+            .credibility-container { grid-template-columns: 1fr; }
+            .credibility-item { border-bottom: 1px solid var(--border-color) !important; padding-bottom: 1rem; }
+            .credibility-item:last-child { border-bottom: none !important; }
+            .problem-grid, .comparison-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .workflow-inputs { grid-template-columns: 1fr 1fr; }
+            .vision-section p { font-size: 1.25rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .workflow-inputs { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">FluxAtlas</div>
+            <div class="nav-links">
+                <a href="#technology">Technology</a>
+                <a href="#applications">Applications</a>
+                <a href="#team">Team</a>
+                <a href="#updates">Updates</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1>Measure the Changing Earth</h1>
+            <p>Monitor how landscapes change over time. FluxAtlas transforms smartphone, drone, airborne and satellite surveys into a living record of environmental change — empowering communities, engineers, and governments to monitor hazards, measure change, and make better decisions.</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Request a Pilot</a>
+                <a href="#problem" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CREDIBILITY STRIP -->
+    <div class="credibility-strip">
+        <div class="credibility-container">
+            <div class="credibility-item">
+                <span class="credibility-label">Built on</span>
+                <span class="credibility-value">UBC Coastal Engineering Research</span>
+            </div>
+            <div class="credibility-item">
+                <span class="credibility-label">Early Validation</span>
+                <span class="credibility-value">Arctic • Coastal BC • Great Lakes</span>
+            </div>
+            <div class="credibility-item">
+                <span class="credibility-label">Professional Expertise</span>
+                <span class="credibility-value">Coastal & Hydrotechnical Engineering</span>
+            </div>
+            <div class="credibility-item">
+                <span class="credibility-label">Current Focus</span>
+                <span class="credibility-value">Preparing pilot deployments</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1: HOW IT WORKS (Redesigned) -->
+    <section id="workflow" class="workflow">
+        <h2>How FluxAtlas Works</h2>
+        <div class="workflow-diagram">
+            
+            <div class="workflow-inputs">
+                <div class="input-card">Community Data (Smartphone)</div>
+                <div class="input-card">Local Professionals (Drone)</div>
+                <div class="input-card">Regional Professionals (Airborne)</div>
+                <div class="input-card">Remote Sensing (Satellite)</div>
+            </div>
+            
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-step">One Shared Terrain Model </div>
+            
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-step">Automatically Aligned <br> in Space & Through Time</div>
+            
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-step">Change Detection</div>
+            
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-step">Decision-ready Maps</div>
+            
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-step" style="background-color: var(--ocean-blue); color: white; border-color: var(--ocean-blue);">
+                Climate Adaptation
+            </div>
+        </div>
+    </section>
+
+   <!-- NEW: VISION SECTION -->
+    <section class="vision-section">
+        <div class="vision-content">
+            <h2>The Goal</h2>
+            <p>From smartphone LiDAR to airborne surveys, FluxAtlas is designed to unify environmental observations across scales and through time.</p>
+        </div>
+    </section>
+
+
+    <!-- SECTION 2: THE PROBLEM -->
+    <div class="bg-gray" id="problem">
+        <div class="container problem-grid">
+            <div class="problem-text">
+                <h2>The Challenge</h2>
+                <p>Coastal and riverine environments are changing faster than ever, forcing communities to adapt. Yet, understanding these changes remains fundamentally difficult.</p>
+                <ul>
+                    <li>Coastal and riverbank erosion threaten infrastructure</li>
+                    <li>Traditional surveys are expensive and infrequent</li>
+                    <li>Communities lack continuous, actionable information for climate adaptation</li>
+                </ul>
+            </div>
+            <div>
+                <!-- Image conceptually showing active erosion -->
+                <img src="https://images.unsplash.com/photo-1579768600185-9ba3883a8b41?auto=format&fit=crop&w=1200&q=80" alt="Active coastal erosion" class="problem-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: WHY FLUXATLAS (Updated Matrix) -->
+    <section id="comparison">
+        <div class="section-header">
+            <h2>A New Standard for Monitoring</h2>
+        </div>
+        <div class="comparison-grid">
+            <div class="comparison-card traditional">
+                <h3>Existing Tools</h3>
+                <ul>
+                    <li>Capture one survey</li>
+                    <li>Process data manually</li>
+                    <li>One survey team</li>
+                    <li>Raw point clouds</li>
+                </ul>
+            </div>
+            <div class="comparison-card fluxatlas-card">
+                <h3>FluxAtlas</h3>
+                <ul>
+                    <li>Build a continuous monitoring record</li>
+                    <li>Automatic alignment & analysis</li>
+                    <li>Community + professional data combined</li>
+                    <li>Decision-ready insights</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: TECHNOLOGY (Outcome Focused) -->
+    <div class="bg-gray" id="technology">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technology Platform</h2>
+                <p>Built to eliminate the bottlenecks of traditional geospatial processing.</p>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Consumer Devices</h4>
+                    <h3>Decision-ready Results</h3>
+                    <p>Unlock cm accurate outputs from the smartphones and off-the-shelf drones already deployed in your communities.</p>
+                </div>
+                <div class="card">
+                    <h4>Multi-Source</h4>
+                    <h3>One Shared Terrain Model</h3>
+                    <p>Seamlessly integrate varied datasets—from phone LiDAR to satellite imagery—into a single, cohesive environment.</p>
+                </div>
+                <div class="card">
+                    <h4>Time</h4>
+                    <h3>Measure Change, Not Just Geometry</h3>
+                    <p>Stop looking at static 3D models. Accurately measure erosion, deposition, and precise volumetric change over time.</p>
+                </div>
+                <div class="card">
+                    <h4>Automation</h4>
+                    <h3>Reduce Weeks to Minutes</h3>
+                    <p>Our algorithms handle the complex alignment of repeat surveys, replacing weeks of manual GIS labor with automated workflows.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 5: APPLICATIONS (Problem Focused) -->
+    <section id="applications">
+        <div class="section-header">
+            <h2>What can you monitor with FluxAtlas?</h2>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                    <h3>Coastal & Riverine Erosion Monitoring</h3>
+                    <p>Track erosion and landscape change over time.</p>
+            </div>
+            <div class="card">
+                    <h3>Infrastructure Risk</h3>
+                    <p>Monitor assets and surrounding terrain.</p>
+            </div>
+            <div class="card">
+                    <h3>Community Monitoring</h3>
+                    <p>Enable local organizations to contribute repeat observations.</p>
+            </div>
+            <div class="card">
+                    <h3>Research & Adaptation</h3>
+                    <p>Build datasets that support scientific research and climate adaptation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: BUILT ON RESEARCH -->
+    <div class="bg-gray" id="research">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built on Research. Designed for Practice.</h2>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Academic Research</h3>
+                    <p>FluxAtlas originated from research into community-based coastal monitoring at the University of British Columbia and has grown into a platform for making repeat, community based, environmental monitoring more accessible.</p>
+                </div>
+                <div class="card">
+                    <h3>Field Validation</h3>
+                    <p>Designed from firsthand experience conducting coastal monitoring in some of Canada's most challenging environments. Developed and tested across diverse environments including the Arctic, Coastal BC, and the Great Lakes.</p>
+                </div>
+                <div class="card">
+                    <h3>Professional Practice</h3>
+                    <p>Developed directly by practicing coastal engineers to solve real-world industry bottlenecks.</p>
+                </div>
+                <div class="card">
+                    <h3>Community Focused</h3>
+                    <p>Built to empower all users, not just the GIS wizards, to use terrain data to make the decisions that mater.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 7: TEAM -->
+    <section id="team">
+        <div class="section-header">
+            <h2>Our Team</h2>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">[ Note: Placeholder images shown. Replace with real headshots. ]</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80" alt="Isaac Guld" class="team-photo">
+                <h3>Isaac Guld, P.Eng.</h3>
+                <h4>Founder & CEO</h4>
+                <p>Coastal & Hydrotechnical Engineer</p>
+                <p>MASc Candidate, UBC</p>
+                <p>Isaac is a hydrotechnical engineer with nearly a decade of professional experience in coastal and riverine engineering. His recent graduate research focuses on community-based environmental monitoring and coastal change.</p>
+            </div>
+            <br>
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80" alt="Andrew Zhao" class="team-photo">
+                <h3>Andrew Zhao</h3>
+                <h4>Founder & CFO</h4>
+                <p>JD / MBA</p>
+                <p>Business Strategy</p>
+                <p>Legal</p>
+            </div>
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" alt="Anastasia Bogdanovic" class="team-photo">
+                <h3>Anastasia Bogdanovic</h3>
+                <h4>Founder & COO </h4>
+                <p>Civil Engineer</p>
+                <p>Community Engagement</p>
+                <p>Engineering & Operations</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: UPDATES (With Icons) -->
+    <div class="bg-gray" id="updates">
+        <div class="container">
+            <div class="section-header">
+                <h2>Development Updates</h2>
+            </div>
+            <div class="timeline">
+                <div class="update">
+                    <div class="update-icon">📍</div>
+                    <div class="update-date">August 2026</div> 
+                    <div class="update-text">Preparing pilot deployments across Arctic, Coastal BC, and Great Lakes regions.</div>
+                </div>
+                <div class="update">
+                    <div class="update-icon">🏢</div>
+                    <div class="update-date">July 2026</div>
+                    <div class="update-text">Incorporated FluxAtlas Technologies Inc.</div>
+                </div>
+                <div class="update">
+                    <div class="update-icon">💰</div>
+                    <div class="update-date">June 2026</div>
+                    <div class="update-text">Received initial $10k seed funding from Ocean Startup Project</div>
+                </div>
+                <div class="update">
+                    <div class="update-icon">📚</div>
+                    <div class="update-date">January 2026</div>
+                    <div class="update-text">Founders meet at UBC in in Tech-e</div>
+                </div>
+                <div class="update">
+                    <div class="update-icon">✈️</div>
+                    <div class="update-date">August 2025</div>
+                    <div class="update-text">First field visit to Tuktoyaktuk that inspired FluxAtlas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: VISION SECTION -->
+    <section class="vision-section">
+        <div class="vision-content">
+            <h2>Our Vision</h2>
+            <p>We believe measuring how the Earth changes should be as accessible as viewing satellite imagery today.</p>
+            <p>FluxAtlas is building the collaborative platform that enables communities, engineers, researchers, and governments to measure and understand landscape change anywhere in the world.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 9: CONTACT -->
+    <section id="contact" class="contact">
+        <h2>Become an Early Pilot Partner</h2>
+        <p>We're currently seeking early pilot partners across North America to deploy our technology alongside communities and industry experts.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="#" class="btn btn-primary">Request a Pilot</a>
+            <a href="mailto:contact@fluxatlas.ca" class="btn btn-secondary-dark">Email Us</a>
+        </div>
+        <div class="newsletter-placeholder">
+            [ Newsletter Signup Form Placeholder ]
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo" style="color: white; margin-bottom: 1rem;">FluxAtlas Technologies Inc.</div>
+        <div class="footer-links">
+            <a href="mailto:hello@fluxatlas.ca">hello@fluxatlas.ca</a>
+        </div>
+        <p>&copy; 2026 FluxAtlas Technologies Inc. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
