@@ -688,7 +688,26 @@
                 <div class="input-card">Remote Sensing (Satellite)</div>
             </div>
             
-            <div class="workflow-arrow">↓</div>
+
+            <!-- The Connecting SVG Element (Polygon shape) -->
+            <div class="w-full h-20 relative -mt-4 -mb-4 hidden md:block z-0">
+                <svg class="w-full h-full text-indigo-50" viewBox="0 0 100 40" preserveAspectRatio="none">
+                    <!-- A subtle shape that acts as a funnel pointing to the bottom middle -->
+                    <polygon points="5,0 95,0 60,40 40,40" fill="currentColor" />
+                </svg>
+                <!-- Down arrows layered on top -->
+                <div class="absolute inset-0 flex items-center justify-center pt-4">
+                <svg class="text-indigo-200" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                </div>
+            </div>
+
+            <!-- Mobile fallback arrow -->
+            <div class="md:hidden flex justify-center py-4 text-indigo-200">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            </div>
+
+
+            <!-- <div class="workflow-arrow">↓</div> -->
             <div class="workflow-step">One Shared Terrain Model </div>
             
             <div class="workflow-arrow">↓</div>
@@ -867,9 +886,8 @@
                 <img src="photos/andrew.jpg" alt="Andrew Zhao" class="team-photo">
                 <h3>Andrew Zhao</h3>
                 <h4>Founder & CFO</h4>
-                <p>JD / MBA</p>
-                <p>Business Strategy</p>
-                <p>Legal</p>
+                <p>JD/MBA Candidate, UBC</p>
+                <p>Andrew bridges the gap between law and finance. He pairs his background at an international law firm with financial expertise gained through his MBA and experience at the BC Securities Commission.</p>
             </div>
             <div class="team-member">
                 <img src="photos/ana.jpg" alt="Anastasia Bogdanovic" class="team-photo">
