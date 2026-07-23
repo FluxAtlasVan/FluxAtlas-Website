@@ -154,6 +154,7 @@
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
+            /* Substituted local image with a high-quality placeholder of a coastal area */
             background: linear-gradient(rgba(10, 25, 47, 0.5), rgba(10, 25, 47, 0.8)), url('photos/erosion_hero_2.jpg') center/cover;
             display: flex;
             align-items: center;
@@ -190,6 +191,118 @@
             gap: 1rem;
             justify-content: center;
         }
+
+        /* --- THE SCALE OF CHANGE (NEW SCROLL SECTION) --- */
+        .scale-section {
+            background-color: var(--ocean-blue);
+            color: var(--white);
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            /* Give it enough room to scroll through */
+        }
+        
+        .scale-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            padding: 4rem 2rem;
+        }
+
+        .story-step {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 4rem 0;
+        }
+
+        .story-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .story-step h2 {
+            color: var(--white);
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .story-step p {
+            font-size: 1.25rem;
+            color: #E2E8F0;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .local-image-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, var(--ocean-blue), transparent 20%, transparent 80%, var(--ocean-blue)), 
+                        linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.8)),
+                        url('photos/red_cliffs.JPG') center/cover;
+            opacity: 0.4;
+            z-index: 0;
+            border-radius: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            padding: 3rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .stat-large { font-size: 3rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1rem; color: #A0AEC0; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-context { font-size: 0.9rem; color: var(--slate-light); margin-top: 0.5rem; }
+
+        .gap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .gap-card {
+            background: rgba(255,255,255,0.05);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .gap-card h4 { color: var(--white); font-size: 1.25rem; margin-bottom: 1rem; }
+        .gap-card .pro { color: var(--white); font-weight: 600; margin-bottom: 0.5rem; }
+        .gap-card .con { color: var(--white); font-weight: 400; opacity: 0.8; }
+
+        .flux-solution {
+            text-align: center;
+            background: var(--white);
+            color: var(--ocean-blue);
+            padding: 5rem 3rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .flux-solution h2 { color: var(--ocean-blue); margin-bottom: 1.5rem; }
+        .flux-solution p { color: var(--slate-gray); }
+        .action-words { display: flex; justify-content: center; gap: 2rem; margin: 3rem 0; font-weight: 600; font-size: 1.25rem; }
 
         /* --- CREDIBILITY STRIP --- */
         .credibility-strip {
@@ -606,12 +719,16 @@
             .credibility-container { grid-template-columns: 1fr 1fr; gap: 1rem; }
             .credibility-item { border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
             .credibility-item:nth-child(3), .credibility-item:nth-child(4) { border-bottom: none; padding-bottom: 0;}
+            .stats-grid { grid-template-columns: 1fr; padding: 2rem; }
+            .gap-grid { grid-template-columns: 1fr; }
+            .action-words { flex-direction: column; gap: 1rem; }
         }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero h1 { font-size: 3rem; }
             .hero p { font-size: 1.1rem; }
+            .story-step h2 { font-size: 2.25rem; }
             .credibility-container { grid-template-columns: 1fr; }
             .credibility-item { border-bottom: 1px solid var(--border-color) !important; padding-bottom: 1rem; }
             .credibility-item:last-child { border-bottom: none !important; }
@@ -729,35 +846,118 @@
         </div>
     </section>
 
-   <!-- NEW: VISION SECTION -->
-    <section class="vision-section">
-        <div class="vision-content">
-            <h2>The Goal</h2>
-            <p>From smartphone LiDAR to airborne surveys, FluxAtlas is designed to unify environmental observations across scales and through time.</p>
+    <!-- SECTION 2: THE SCALE OF CHANGE (Replaces "The Problem") -->
+    <section id="problem" class="scale-section">
+        <div class="scale-container">
+            
+            <!-- 01 - Local -->
+            <div class="story-step" id="step-local">
+                <div class="local-image-bg"></div>
+                <div style="position: relative; z-index: 10;">
+                    <h2>Locally, change is accelerating.</h2>
+                    <p style="font-size: 1.5rem; margin-bottom: 1rem; font-weight: 300;">A community sees a road, home, or shoreline retreating.</p>
+                    <p>But without repeatable measurements, it's difficult to quantify how quickly the landscape is changing—or know exactly when action is needed.</p>
+                </div>
+            </div>
+
+            <!-- 02 - Canada -->
+            <div class="story-step" id="step-canada">
+                <h2>Across Canada, the problem is everywhere.</h2>
+                <div class="stats-grid">
+                    <div>
+                        <div class="stat-large">243,000+</div>
+                        <div class="stat-label">km Ocean Coastline</div>
+                    </div>
+                    <div>
+                        <div class="stat-large">9,500</div>
+                        <div class="stat-label">km Great Lakes Shoreline</div>
+                    </div>
+                    <div>
+                        <div class="stat-large">7M+</div>
+                        <div class="stat-label">Coastal Population</div>
+                    </div>
+                </div>
+                <p>From the Arctic to the Atlantic, Pacific, and Great Lakes, Canadian communities face erosion and flooding across an enormous and difficult-to-monitor geography.</p>
+            </div>
+
+            <!-- 03 - The Gap -->
+            <div class="story-step" id="step-gap">
+                <h2>But we don't measure change everywhere.</h2>
+                <div class="gap-grid">
+                    <div class="gap-card">
+                        <h4>Satellites</h4>
+                        <div class="pro">✓ Wide Coverage</div>
+                        <div class="con">✕ Often too coarse for local change</div>
+                    </div>
+                    <div class="gap-card">
+                        <h4>Professional Surveys</h4>
+                        <div class="pro">✓ High Precision</div>
+                        <div class="con">✕ Expensive and infrequent</div>
+                    </div>
+                    <div class="gap-card">
+                        <h4>Community Observation</h4>
+                        <div class="pro">✓ Local and Immediate</div>
+                        <div class="con">✕ Difficult to standardize</div>
+                    </div>
+                </div>
+                <p style="font-weight: 500; font-size: 1.5rem; color: var(--white);">The result: vast areas sit in the dark between expensive professional surveys and coarse regional datasets.</p>
+            </div>
+
+            <!-- 04 - Global -->
+            <div class="story-step" id="step-global">
+                <h2>And Canada is only the beginning.</h2>
+                <div class="stats-grid" style="grid-template-columns: 1fr; max-width: 800px; margin: 0 auto 3rem auto; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="stat-large" style="min-width: 200px;">150–200M</div>
+                        <div>
+                            <div class="stat-label" style="color: var(--white);">Immediate High-Value Target Zone</div>
+                            <div class="stat-context">People living in the intersection of very low elevation and immediate coastal proximity.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="stat-large" style="min-width: 200px;">~300M</div>
+                        <div>
+                            <div class="stat-label" style="color: var(--white);">Compound Risk Zone</div>
+                            <div class="stat-context">People living in low-elevation river deltas where coastal and riverine processes interact.</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 2rem;">
+                        <div class="stat-large" style="min-width: 200px;">1.4B+</div>
+                        <div>
+                            <div class="stat-label" style="color: var(--white);">Direct Fluvial Flood Exposure</div>
+                            <div class="stat-context">People exposed to significant river flood risk globally.</div>
+                        </div>
+                    </div>
+                </div>
+                <p>Across the world, communities, infrastructure, and ecosystems are being reshaped by coastal and riverine change.</p>
+            </div>
+
+            <!-- 05 & 06 - Convergence & Solution -->
+            <div class="story-step" id="step-solution">
+                <div class="flux-solution">
+                    <h2 style="font-size: 2.5rem; letter-spacing: -1px;">FluxAtlas connects these scales.</h2>
+                    <p style="font-size: 1.25rem; max-width: 800px; margin: 0 auto;">From smartphone surveys to professional-grade terrain data, FluxAtlas turns fragmented observations into a continuous, high-resolution record of landscape change.</p>
+                    
+                    <!-- UN Ocean Decade Challenge 6 Integration -->
+                    <div style="margin: 3rem auto; padding: 2rem; background: var(--bg-light); border-radius: 8px; max-width: 600px; text-align: center; border: 1px solid var(--border-color);">
+                        <p style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-light); margin-bottom: 0.5rem; font-weight: 600;">Aligned with Global Goals</p>
+                        <h4 style="color: var(--ocean-blue); font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700;">UN Ocean Decade Challenge 6</h4>
+                        <p style="font-size: 1rem; color: var(--slate-gray); margin: 0;">Increasing community resilience to ocean hazards through accessible, data-driven monitoring.</p>
+                    </div>
+
+                    <div class="action-words">
+                        <span>Measure.</span>
+                        <span>Monitor.</span>
+                        <span>Understand.</span>
+                        <span>Act.</span>
+                    </div>
+                    
+                    <a href="#contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">Request a Pilot</a>
+                </div>
+            </div>
+
         </div>
     </section>
-
-
-    <!-- SECTION 2: THE PROBLEM -->
-    <div class="bg-gray" id="problem">
-        <div class="container problem-grid">
-            <div class="problem-text">
-                <h2>The Challenge</h2>
-                <p>Coastal and riverine environments are changing faster than ever, forcing communities to adapt. Yet, understanding these changes remains fundamentally difficult.</p>
-                <ul>
-                    <li>Coastal and riverbank erosion threaten infrastructure</li>
-                    <li>Traditional surveys are expensive and infrequent</li>
-                    <li>Communities lack continuous, actionable information for climate adaptation</li>
-                </ul>
-            </div>
-            <div>
-                <!-- Image conceptually showing active erosion -->
-                <img src="photos/red_cliffs.JPG" 
-                     alt="Active coastal erosion" 
-                     class="problem-image">
-            </div>
-        </div>
-    </div>
 
     <!-- SECTION 3: WHY FLUXATLAS (Updated Matrix) -->
     <section id="comparison">
@@ -953,7 +1153,6 @@
         <h2>Become an Early Pilot Partner</h2>
         <p>We're currently seeking early pilot partners across North America to deploy our technology alongside communities and industry experts.</p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <!-- <a href="#" class="btn btn-primary">Request a Pilot</a> -->
             <a href="mailto:contact@fluxatlas.ca" class="btn btn-secondary-dark">Email Us</a>
         </div>
         <div class="newsletter-placeholder">
@@ -970,5 +1169,31 @@
         <p>&copy; 2026 FluxAtlas Technologies Inc. All rights reserved.</p>
     </footer>
 
+    <!-- SCROLL ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelectorAll('.story-step');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.25 // Trigger when 25% of the element is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: Unobserve if you only want it to animate once
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            steps.forEach(step => {
+                observer.observe(step);
+            });
+        });
+    </script>
 </body>
 </html>
